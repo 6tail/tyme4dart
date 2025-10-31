@@ -53,7 +53,7 @@ class LunarFestival extends AbstractTyme {
         return LunarFestival(type, LunarDay(year, int.parse(dt.substring(4, 6), radix: 10), int.parse(dt.substring(6), radix: 10)), null, dt);
       case FestivalType.TERM:
         final solarTerm = SolarTerm(year, int.parse(dt.substring(4), radix: 10));
-        return LunarFestival(type, solarTerm.getJulianDay().getSolarDay().getLunarDay(), solarTerm, dt);
+        return LunarFestival(type, solarTerm.getSolarDay().getLunarDay(), solarTerm, dt);
       case FestivalType.EVE:
         return LunarFestival(type, LunarDay(year + 1, 1, 1).next(-1), null, dt);
     }
@@ -71,7 +71,7 @@ class LunarFestival extends AbstractTyme {
     for (RegExpMatch match in matches) {
       String dt = match.group(0)!;
       SolarTerm solarTerm = SolarTerm(year, int.parse(dt.substring(4), radix: 10));
-      LunarDay lunarDay = solarTerm.getJulianDay().getSolarDay().getLunarDay();
+      LunarDay lunarDay = solarTerm.getSolarDay().getLunarDay();
       if (lunarDay.getYear() == year && lunarDay.getMonth() == month && lunarDay.getDay() == day) {
         return LunarFestival(FestivalType.TERM, lunarDay, solarTerm, dt);
       }

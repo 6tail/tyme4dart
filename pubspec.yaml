@@ -1,6 +1,6 @@
 name: tyme
 description: A powerful Chinese calendar library supporting solar calendar, lunar calendar, 24 solar terms, constellations, zodiac signs, eight characters and more.
-version: 1.3.8
+version: 1.3.9
 homepage: https://github.com/6tail/tyme4dart
 
 environment:

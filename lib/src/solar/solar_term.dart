@@ -1,5 +1,6 @@
 import '../jd/julian_day.dart';
 import '../loop_tyme.dart';
+import '../solar/solar_day.dart';
 import '../util/shou_xing_util.dart';
 
 /// 节气
@@ -11,7 +12,7 @@ class SolarTerm extends LoopTyme {
   /// 年
   late final int year;
 
-  /// 粗略的儒略日
+  /// 儒略日（用于日历，只精确到日中午12:00）
   late final double cursoryJulianDay;
 
   SolarTerm(int year, int index) : super(names, index) {
@@ -52,12 +53,15 @@ class SolarTerm extends LoopTyme {
   /// 是否气令
   bool isQi() => index % 2 == 0;
 
-  /// 儒略日
+  /// 儒略日（精确到秒）
   JulianDay getJulianDay() => JulianDay(ShouXingUtil.qiAccurate2(cursoryJulianDay) + JulianDay.j2000);
+
+  /// 公历日（用于日历）
+  SolarDay getSolarDay() => JulianDay.fromJulianDay(cursoryJulianDay + JulianDay.j2000).getSolarDay();
 
   /// 获取年份
   int getYear() => year;
 
-  /// 粗略的儒略日
+  /// 儒略日（用于日历，只精确到日中午12:00）
   double getCursoryJulianDay() => cursoryJulianDay;
 }

@@ -14,6 +14,7 @@ import '../lunar/lunar_year.dart';
 import '../solar/solar_day.dart';
 import '../solar/solar_term.dart';
 import '../solar/solar_time.dart';
+import 'three_pillars.dart';
 import 'sixty_cycle.dart';
 import 'sixty_cycle_hour.dart';
 import 'sixty_cycle_month.dart';
@@ -36,7 +37,7 @@ class SixtyCycleDay extends AbstractTyme {
 
   static SixtyCycleDay fromSolarDay(SolarDay solarDay) {
     int solarYear = solarDay.getYear();
-    SolarDay springSolarDay = SolarTerm(solarYear, 3).getJulianDay().getSolarDay();
+    SolarDay springSolarDay = SolarTerm(solarYear, 3).getSolarDay();
     LunarDay lunarDay = solarDay.getLunarDay();
     LunarYear lunarYear = lunarDay.getLunarMonth().getLunarYear();
     if (lunarYear.getYear() == solarYear) {
@@ -50,7 +51,7 @@ class SixtyCycleDay extends AbstractTyme {
     }
     SolarTerm term = solarDay.getTerm();
     int index = term.getIndex() - 3;
-    if (index < 0 && term.getJulianDay().getSolarDay().isAfter(springSolarDay)) {
+    if (index < 0 && term.getSolarDay().isAfter(springSolarDay)) {
       index += 24;
     }
     return SixtyCycleDay(solarDay, SixtyCycleMonth(SixtyCycleYear(lunarYear.getYear()), LunarMonth(solarYear, 1).getSixtyCycle().next((index * 0.5).floor())), lunarDay.getSixtyCycle());
@@ -86,9 +87,9 @@ class SixtyCycleDay extends AbstractTyme {
   /// 九星
   NineStar getNineStar() {
     SolarTerm dongZhi = SolarTerm.fromIndex(solarDay.getYear(), 0);
-    SolarDay dongZhiSolar = dongZhi.getJulianDay().getSolarDay();
-    SolarDay xiaZhiSolar = dongZhi.next(12).getJulianDay().getSolarDay();
-    SolarDay dongZhiSolar2 = dongZhi.next(24).getJulianDay().getSolarDay();
+    SolarDay dongZhiSolar = dongZhi.getSolarDay();
+    SolarDay xiaZhiSolar = dongZhi.next(12).getSolarDay();
+    SolarDay dongZhiSolar2 = dongZhi.next(24).getSolarDay();
     int dongZhiIndex = dongZhiSolar.getLunarDay().getSixtyCycle().getIndex();
     int xiaZhiIndex = xiaZhiSolar.getLunarDay().getSixtyCycle().getIndex();
     int dongZhiIndex2 = dongZhiSolar2.getLunarDay().getSixtyCycle().getIndex();
@@ -144,4 +145,7 @@ class SixtyCycleDay extends AbstractTyme {
     }
     return l;
   }
+
+  /// 三柱
+  ThreePillars getThreePillars() => ThreePillars(getYear(), getMonth(), getSixtyCycle());
 }

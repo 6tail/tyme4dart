@@ -15,7 +15,7 @@ void main() {
       // 月柱
       SixtyCycle month = eightChar.getMonth();
       // 日柱
-      SixtyCycle day = eightChar.getDay()!;
+      SixtyCycle day = eightChar.getDay();
       // 时柱
       SixtyCycle hour = eightChar.getHour();
 
@@ -56,7 +56,7 @@ void main() {
       // 月柱
       SixtyCycle month = eightChar.getMonth();
       // 日柱
-      SixtyCycle day = eightChar.getDay()!;
+      SixtyCycle day = eightChar.getDay();
       // 时柱
       SixtyCycle hour = eightChar.getHour();
 
@@ -122,13 +122,13 @@ void main() {
       EightChar eightChar = EightChar.fromName('乙酉', '戊子', '辛巳', '壬辰');
 
       // 日干
-      HeavenStem me = eightChar.getDay()!.getHeavenStem();
+      HeavenStem me = eightChar.getDay().getHeavenStem();
       // 年柱地势
       expect(me.getTerrain(eightChar.getYear().getEarthBranch()).getName(), '临官');
       // 月柱地势
       expect(me.getTerrain(eightChar.getMonth().getEarthBranch()).getName(), '长生');
       // 日柱地势
-      expect(me.getTerrain(eightChar.getDay()!.getEarthBranch()).getName(), '死');
+      expect(me.getTerrain(eightChar.getDay().getEarthBranch()).getName(), '死');
       // 时柱地势
       expect(me.getTerrain(eightChar.getHour().getEarthBranch()).getName(), '墓');
     });
@@ -137,7 +137,7 @@ void main() {
       EightChar eightChar = SolarTime.fromYmdHms(2005, 12, 23, 8, 37, 0).getLunarHour().getEightChar();
       expect(eightChar.getYear().getName(), '乙酉');
       expect(eightChar.getMonth().getName(), '戊子');
-      expect(eightChar.getDay()!.getName(), '辛巳');
+      expect(eightChar.getDay().getName(), '辛巳');
       expect(eightChar.getHour().getName(), '壬辰');
     });
 
@@ -145,7 +145,7 @@ void main() {
       EightChar eightChar = SolarTime.fromYmdHms(1988, 2, 15, 23, 30, 0).getLunarHour().getEightChar();
       expect(eightChar.getYear().getName(), '戊辰');
       expect(eightChar.getMonth().getName(), '甲寅');
-      expect(eightChar.getDay()!.getName(), '辛丑');
+      expect(eightChar.getDay().getName(), '辛丑');
       expect(eightChar.getHour().getName(), '戊子');
     });
 
@@ -272,7 +272,7 @@ void main() {
       EightChar eightChar = EightChar.fromName('丙寅', '癸巳', '癸酉', '己未');
       SixtyCycle year = eightChar.getYear();
       SixtyCycle month = eightChar.getMonth();
-      SixtyCycle day = eightChar.getDay()!;
+      SixtyCycle day = eightChar.getDay();
       SixtyCycle hour = eightChar.getHour();
 
       HeavenStem me = day.getHeavenStem();
@@ -633,6 +633,10 @@ void main() {
         '2052年2月19日 16:00:00',
       ];
       expect(actual, expected);
+    });
+
+    test('test51 - 八字测试', () {
+      expect(SolarTime.fromYmdHms(1034, 10, 2, 20, 0, 0).getLunarHour().getEightChar().toString(), '甲戌 癸酉 甲戌 甲戌');
     });
   });
 }

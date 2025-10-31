@@ -2,6 +2,7 @@ import '../abstract_culture.dart';
 import '../sixtycycle/earth_branch.dart';
 import '../sixtycycle/heaven_stem.dart';
 import '../sixtycycle/sixty_cycle.dart';
+import '../sixtycycle/three_pillars.dart';
 import '../solar/solar_term.dart';
 import '../solar/solar_time.dart';
 
@@ -9,49 +10,43 @@ import '../solar/solar_time.dart';
 ///
 /// Author: 6tail
 class EightChar extends AbstractCulture {
-  /// 年柱
-  final SixtyCycle year;
-
-  /// 月柱
-  final SixtyCycle month;
-
-  /// 日柱
-  final SixtyCycle day;
+  /// 三柱
+  late final ThreePillars threePillars;
 
   /// 时柱
   final SixtyCycle hour;
 
-  EightChar(this.year, this.month, this.day, this.hour);
+  EightChar(SixtyCycle year, SixtyCycle month, SixtyCycle day, this.hour) : threePillars = ThreePillars(year, month, day);
 
-  EightChar.fromName(String yearName, String monthName, String dayName, String hourName)
-      : year = SixtyCycle.fromName(yearName),
-        month = SixtyCycle.fromName(monthName),
-        day = SixtyCycle.fromName(dayName),
-        hour = SixtyCycle.fromName(hourName);
+  EightChar.fromName(String yearName, String monthName, String dayName, String hourName) : threePillars = ThreePillars(SixtyCycle.fromName(yearName), SixtyCycle.fromName(monthName), SixtyCycle.fromName(dayName)), hour = SixtyCycle.fromName(hourName);
 
   /// 年柱
-  SixtyCycle getYear() => year;
+  SixtyCycle getYear() => threePillars.getYear();
 
   /// 月柱
-  SixtyCycle getMonth() => month;
+  SixtyCycle getMonth() => threePillars.getMonth();
 
   /// 日柱
-  SixtyCycle? getDay() => day;
+  SixtyCycle getDay() => threePillars.getDay();
 
   /// 时柱
   SixtyCycle getHour() => hour;
 
   /// 胎元
-  SixtyCycle getFetalOrigin() => SixtyCycle.fromName(month.getHeavenStem().next(1).getName() + month.getEarthBranch().next(3).getName());
+  SixtyCycle getFetalOrigin() {
+    SixtyCycle m = getMonth();
+    return SixtyCycle.fromName(m.getHeavenStem().next(1).getName() + m.getEarthBranch().next(3).getName());
+  }
 
   /// 胎息
   SixtyCycle getFetalBreath() {
-    return SixtyCycle.fromName(day.getHeavenStem().next(5).getName() + EarthBranch.fromIndex(13 - day.getEarthBranch().getIndex()).getName());
+    SixtyCycle d = getDay();
+    return SixtyCycle.fromName(d.getHeavenStem().next(5).getName() + EarthBranch.fromIndex(13 - d.getEarthBranch().getIndex()).getName());
   }
 
   /// 命宫
   SixtyCycle getOwnSign() {
-    int m = month.getEarthBranch().getIndex() - 1;
+    int m = getMonth().getEarthBranch().getIndex() - 1;
     if (m < 1) {
       m += 12;
     }
@@ -61,12 +56,12 @@ class EightChar extends AbstractCulture {
     }
     int offset = m + h;
     offset = (offset >= 14 ? 26 : 14) - offset;
-    return SixtyCycle.fromName(HeavenStem.fromIndex((year.getHeavenStem().getIndex() + 1) * 2 + offset - 1).getName() + EarthBranch.fromIndex(offset + 1).getName());
+    return SixtyCycle.fromName(HeavenStem.fromIndex((getYear().getHeavenStem().getIndex() + 1) * 2 + offset - 1).getName() + EarthBranch.fromIndex(offset + 1).getName());
   }
 
   /// 身宫
   SixtyCycle getBodySign() {
-    int offset = month.getEarthBranch().getIndex() - 1;
+    int offset = getMonth().getEarthBranch().getIndex() - 1;
     if (offset < 1) {
       offset += 12;
     }
@@ -74,12 +69,15 @@ class EightChar extends AbstractCulture {
     if (offset > 12) {
       offset -= 12;
     }
-    return SixtyCycle.fromName(HeavenStem.fromIndex((year.getHeavenStem().getIndex() + 1) * 2 + offset - 1).getName() + EarthBranch.fromIndex(offset + 1).getName());
+    return SixtyCycle.fromName(HeavenStem.fromIndex((getYear().getHeavenStem().getIndex() + 1) * 2 + offset - 1).getName() + EarthBranch.fromIndex(offset + 1).getName());
   }
 
   /// [startYear]开始年(含)到[endYear]结束年(含)公历时刻列表，支持1-9999年
   List<SolarTime> getSolarTimes(int startYear, int endYear) {
     List<SolarTime> l = [];
+    SixtyCycle year = getYear();
+    SixtyCycle month = getMonth();
+    SixtyCycle day = getDay();
     // 月地支距寅月的偏移值
     int m = month.getEarthBranch().next(-2).getIndex();
     // 月天干要一致
@@ -138,5 +136,5 @@ class EightChar extends AbstractCulture {
   }
 
   @override
-  String getName() => '$year $month $day $hour';
+  String getName() => '$threePillars $hour';
 }

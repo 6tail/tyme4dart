@@ -38,7 +38,7 @@ void main() {
 
       expect(eightChar.getYear().getName(), equals('戊辰'));
       expect(eightChar.getMonth().getName(), equals('甲寅'));
-      expect(eightChar.getDay()?.getName(), equals('辛丑'));
+      expect(eightChar.getDay().getName(), equals('辛丑'));
       expect(eightChar.getHour().getName(), equals('戊子'));
     });
   });

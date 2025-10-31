@@ -62,7 +62,7 @@ class SixtyCycleMonth extends AbstractTyme {
   }
 
   /// 首日（节令当天）
-  SixtyCycleDay getFirstDay() => SixtyCycleDay.fromSolarDay(SolarTerm(year.getYear(), 3 + getIndexInYear() * 2).getJulianDay().getSolarDay());
+  SixtyCycleDay getFirstDay() => SixtyCycleDay.fromSolarDay(SolarTerm(year.getYear(), 3 + getIndexInYear() * 2).getSolarDay());
 
   /// 本月的干支日列表
   List<SixtyCycleDay> getDays() {

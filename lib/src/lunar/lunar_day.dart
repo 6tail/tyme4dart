@@ -14,6 +14,7 @@ import '../culture/star/six/six_star.dart';
 import '../culture/star/twelve/twelve_star.dart';
 import '../culture/star/twentyeight/twenty_eight_star.dart';
 import '../festival/lunar_festival.dart';
+import '../sixtycycle/three_pillars.dart';
 import '../sixtycycle/earth_branch.dart';
 import '../sixtycycle/heaven_stem.dart';
 import '../sixtycycle/sixty_cycle.dart';
@@ -121,9 +122,9 @@ class LunarDay extends AbstractTyme {
   NineStar getNineStar() {
     SolarDay d = getSolarDay();
     SolarTerm dongZhi = SolarTerm(d.getYear(), 0);
-    SolarDay dongZhiSolar = dongZhi.getJulianDay().getSolarDay();
-    SolarDay xiaZhiSolar = dongZhi.next(12).getJulianDay().getSolarDay();
-    SolarDay dongZhiSolar2 = dongZhi.next(24).getJulianDay().getSolarDay();
+    SolarDay dongZhiSolar = dongZhi.getSolarDay();
+    SolarDay xiaZhiSolar = dongZhi.next(12).getSolarDay();
+    SolarDay dongZhiSolar2 = dongZhi.next(24).getSolarDay();
     int dongZhiIndex = dongZhiSolar.getLunarDay().getSixtyCycle().index;
     int xiaZhiIndex = xiaZhiSolar.getLunarDay().getSixtyCycle().index;
     int dongZhiIndex2 = dongZhiSolar2.getLunarDay().getSixtyCycle().index;
@@ -212,4 +213,7 @@ class LunarDay extends AbstractTyme {
 
   /// 小六壬
   MinorRen getMinorRen() => getLunarMonth().getMinorRen().next(day - 1);
+
+  /// 三柱
+  ThreePillars getThreePillars() => getSixtyCycleDay().getThreePillars();
 }
