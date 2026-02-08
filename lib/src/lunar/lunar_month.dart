@@ -18,7 +18,7 @@ import 'lunar_year.dart';
 ///
 /// Author: 6tail
 class LunarMonth extends MonthUnit {
-  static const List<String> names = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+  static const List<String> names = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "冬月", "腊月"];
 
   /// 是否闰月
   late final bool leap;
