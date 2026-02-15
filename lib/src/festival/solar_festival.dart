@@ -31,7 +31,7 @@ class SolarFestival extends AbstractTyme {
 
   static SolarFestival? fromIndex(int year, int index) {
     if (index < 0 || index >= names.length) {
-      throw ArgumentError('illegal index: $index');
+      return null;
     }
     RegExp pattern = RegExp('@${index.toString().padLeft(2, '0')}\\d{9}');
     RegExpMatch? match = pattern.firstMatch(data);

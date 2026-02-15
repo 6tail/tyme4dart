@@ -1,3 +1,5 @@
+import 'package:tyme/src/solar/solar_day.dart';
+
 import '../abstract_tyme.dart';
 import '../enums/festival_type.dart';
 import '../lunar/lunar_day.dart';
@@ -39,7 +41,7 @@ class LunarFestival extends AbstractTyme {
 
   static LunarFestival? fromIndex(int year, int index) {
     if (index < 0 || index >= names.length) {
-      throw ArgumentError('illegal index: $index');
+      return null;
     }
     RegExp pattern = RegExp('@${index.toString().padLeft(2, '0')}\\d+');
     RegExpMatch? match = pattern.firstMatch(data);
@@ -66,25 +68,32 @@ class LunarFestival extends AbstractTyme {
       return LunarFestival(FestivalType.DAY, LunarDay(year, month, day), null, match.group(0)!);
     }
 
+    LunarDay lunarDay = LunarDay(year, month, day);
+    SolarDay solarDay = lunarDay.getSolarDay();
+
     pattern = RegExp('@\\d{2}1\\d{2}');
     Iterable<RegExpMatch> matches = pattern.allMatches(data);
     for (RegExpMatch match in matches) {
       String dt = match.group(0)!;
-      SolarTerm solarTerm = SolarTerm(year, int.parse(dt.substring(4), radix: 10));
-      LunarDay lunarDay = solarTerm.getSolarDay().getLunarDay();
-      if (lunarDay.getYear() == year && lunarDay.getMonth() == month && lunarDay.getDay() == day) {
-        return LunarFestival(FestivalType.TERM, lunarDay, solarTerm, dt);
+      SolarTerm term = SolarTerm(year, int.parse(dt.substring(4), radix: 10));
+      SolarDay termDay = term.getSolarDay();
+      if (termDay.getYear() == solarDay.getYear() && termDay.getMonth() == solarDay.getMonth() && termDay.getDay() == solarDay.getDay()) {
+        return LunarFestival(FestivalType.TERM, lunarDay, term, dt);
       }
     }
 
-    pattern = RegExp('@\\d{2}2');
-    match = pattern.firstMatch(data);
-    if (match == null) {
-      return null;
+    if (month == 12 && day > 28) {
+      pattern = RegExp('@\\d{2}2');
+      match = pattern.firstMatch(data);
+      if (match == null) {
+        return null;
+      }
+      LunarDay nextDay = lunarDay.next(1);
+      if (nextDay.getMonth() == 1 && nextDay.getDay() == 1) {
+        return LunarFestival(FestivalType.EVE, lunarDay, null, match.group(0)!);
+      }
     }
-    LunarDay lunarDay = LunarDay(year, month, day);
-    LunarDay nextDay = lunarDay.next(1);
-    return nextDay.getMonth() == 1 && nextDay.getDay() == 1 ? LunarFestival(FestivalType.EVE, lunarDay, null, match.group(0)!) : null;
+    return null;
   }
 
   @override
