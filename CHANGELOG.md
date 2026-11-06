@@ -42,3 +42,6 @@
 ## [1.5.0] - 2026-06-28
 1. Added：Hijri calendar。
 2. Optimized：Code and algorithms.
+
+## [1.5.1] - 2026-11-06
+1. Added: 2027 legal holidays.
